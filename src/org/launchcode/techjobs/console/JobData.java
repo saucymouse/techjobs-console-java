@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by LaunchCode
@@ -62,22 +63,44 @@ public class JobData {
      * with "Enterprise Holdings, Inc".
      *
      * @param column   Column that should be searched.
-     * @param value Value of teh field to search for
+     * @param value Value of the field to search for
      * @return List of all jobs matching the criteria
      */
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
+        // function that takes a parameter with the column name/type and a parameter with the user input (value) and returns an array list of hashmaps
 
         // load data, if not already loaded
         loadData();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        //creates empty array of jobs
 
-        for (HashMap<String, String> row : allJobs) {
+        for (HashMap<String, String> job : allJobs) {
+            //iterates through each job (hashmap) in allJobs
 
-            String aValue = row.get(column);
+            String aValue = job.get(column);
 
             if (aValue.contains(value)) {
-                jobs.add(row);
+                jobs.add(job);
+            }
+        }
+
+        return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String searchTerm) {
+
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> job : allJobs) {
+            //loops through each job
+            for (Map.Entry<String, String> jobProperty : job.entrySet()) {
+                //loops through the k/v pairs of each job/hashmap
+                if (jobProperty.getValue().contains(searchTerm)) {
+                    jobs.add(job);
+                }
             }
         }
 
